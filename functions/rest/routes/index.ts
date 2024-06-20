@@ -97,8 +97,8 @@ router.post('/upload', auth, async (req: Request, env: Env) => {
     for (let item of images) {
         const fileType = item.type
         if (!checkFileType(fileType)) {
-            errs.push(`${fileType} not support.`)
-            continue
+            // errs.push(`${fileType} not support.`)
+            // continue
         }
         const time = new Date().getTime()
         const objecPath = await getFilePath(fileType, time)

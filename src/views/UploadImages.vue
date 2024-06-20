@@ -1,8 +1,8 @@
 <template>
 	<div class="mx-auto max-w-6xl my-4 px-4">
-		<div class="text-gray-800 text-lg">上传图片</div>
+		<div class="text-gray-800 text-lg">上传文件</div>
 		<div class="mb-4 text-sm text-gray-500">
-			每张图片大小不超过 {{ formatBytes(imageSizeLimit) }}
+			每个文件大小不超过 {{ formatBytes(imageSizeLimit) }}
 		</div>
 
 		<div class="border-2 border-dashed border-slate-400 rounded-md relative">
@@ -13,58 +13,69 @@
 					class="absolute -z-10 left-0 top-0 w-full h-full flex items-center justify-center">
 					<div class="text-gray-500">
 						<font-awesome-icon :icon="faCopy" />
-						粘贴或拖动图片至此处
+						粘贴或拖动文件至此处
 					</div>
 				</div>
 
 				<transition-group name="el-fade-in-linear">
 					<div class="col-span-3 md:col-span-1" v-for="item in convertedImages" :key="item.tmpSrc">
-						<image-box :src="item.tmpSrc" :size="item.file.size" :name="item.file.name"
-							@delete="removeImage(item.tmpSrc)" mode="converted" />
+						<div v-if="item.file.type.includes('image')">
+							<image-box :src="item.tmpSrc" :size="item.file.size" :name="item.file.name"
+								@delete="removeImage(item.tmpSrc)" mode="converted" />
+						</div>
+						<div v-else class="el-card">
+							<el-card>
+								<p>文件: {{ item.file.name }} _ {{ item.file.type }}</p>
+							</el-card>
+						</div>
+
 					</div>
 				</transition-group>
 			</div>
 		</div>
 		<div class="w-full rounded-md shadow-sm overflow-hidden mt-4 grid grid-cols-8">
-			<div class="md:col-span-1 col-span-8">
+			<!-- <div class="md:col-span-1 col-span-8">
 				<div class="w-full h-10 bg-blue-500 cursor-pointer flex items-center justify-center text-white" :class="{
 					'area-disabled': loading
 				}" @click="input?.click()">
 					<font-awesome-icon :icon="faImages" class="mr-2" />
-					选择图片
+					选择文件
 				</div>
-			</div>
+			</div> -->
+
+			<el-button type="primary" :icon="Delete" @click="input?.click()">选择文件</el-button>
 
 			<div class="md:col-span-4 col-span-8">
-				<div class="w-full h-10 bg-slate-200 leading-10 px-4 text-center md:text-left">
+				<div class="w-full h-10 leading-10 px-4 text-center md:text-left">
 					已选择 {{ convertedImages.length }} 张，共 {{ formatBytes(imagesTotalSize) }}
 				</div>
 			</div>
 
-			<div class="md:col-span-1 col-span-3">
+			<!-- <div class="md:col-span-1 col-span-3">
 				<div class="w-full bg-red-500 cursor-pointer h-10 flex items-center justify-center text-white" :class="{
 					'area-disabled': loading
 				}" @click="clearInput">
 					<font-awesome-icon :icon="faTrashAlt" class="mr-2" />
 					清除
 				</div>
-			</div>
-			<div class="md:col-span-1 col-span-3">
-				<div class="w-full bg-sky-500  cursor-pointer h-10 flex items-center justify-center text-white" :class="{
-					'area-disabled': loading
-				}" @click="clipboardUpload">
-					<font-awesome-icon :icon="faTrashAlt" class="mr-2" />
-					上传剪切板
-				</div>
-			</div>
-			<div class="md:col-span-1 col-span-5">
+			</div> -->
+
+			<el-button type="primary" :icon="Delete" @click="clearInput">清除</el-button>
+			<!-- <div class="md:col-span-1 col-span-5"> -->
+			<el-button @click="uploadImages" type="primary">
+				上传<el-icon class="el-icon--right">
+					<Upload />
+				</el-icon>
+			</el-button>
+			<!-- </div> -->
+			<!-- <div class="md:col-span-1 col-span-5">
 				<div class="w-full h-10 flex items-center justify-center text-white bg-green-500 cursor-pointer" :class="{
 					'area-disabled': convertedImages.length === 0 || loading
 				}" @click="uploadImages">
 					<font-awesome-icon :icon="faUpload" class="mr-2" />
 					上传
 				</div>
-			</div>
+			</div> -->
 		</div>
 		<result-list v-show="imgResultList && imgResultList.length" :image-list="imgResultList" ref="resultList"
 			class="mt-4" />
@@ -90,6 +101,9 @@ const imgResultList = ref<ImgItem[]>([])
 const imagesTotalSize = computed(() =>
 	convertedImages.value.reduce((total, item) => total + item.file.size, 0)
 )
+import { Delete, Edit, Search, Share, Upload } from '@element-plus/icons-vue'
+
+import { ElCard, ElButton, ElIcon } from 'element-plus'
 
 const imageSizeLimit = 20 * 1024 * 1024
 const input = ref<HTMLInputElement>()
@@ -164,11 +178,11 @@ const appendConvertedImages = async (files: FileList | null | undefined) => {
 		}
 
 		// if (!file.type.startsWith('image/')) {
-			// elNotify({
-				// message: `${file.name} 不是图片文件`,
-				// type: 'error'
-			// })
-			// continue
+		// elNotify({
+		// message: `${file.name} 不是图片文件`,
+		// type: 'error'
+		// })
+		// continue
 		// }
 
 		convertedImages.value = [
