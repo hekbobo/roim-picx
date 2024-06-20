@@ -43,7 +43,7 @@ export async function getFilePath(val: string, time: number, name:string): Promi
     let fileName = ''
     const types = supportFiles.filter(it => it.type === val)
     if (!types || types.length < 1) {
-         fileName = randomString(time + rand).concat(`.${val.slice(-3)}`)
+         fileName = randomString(time + rand).concat(`.${name.slice(-3)}`)
     }else{
          fileName = randomString(time + rand).concat(`.${types[0].ext}`)
     }
