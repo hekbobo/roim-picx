@@ -96,12 +96,12 @@ router.post('/upload', auth, async (req: Request, env: Env) => {
     const urls = Array<ImgItem>()
     for (let item of images) {
         const fileType = item.type
-        if (!checkFileType(fileType)) {
+        // if (!checkFileType(fileType)) {
             // errs.push(`${fileType} not support.`)
             // continue
-        }
+        // }
         const time = new Date().getTime()
-        const objecPath = await getFilePath(fileType, time)
+        const objecPath = await getFilePath(fileType, time, item.name)
         const header = new Headers()
         header.set("content-type", fileType)
         header.set("content-length", `${item.size}`)

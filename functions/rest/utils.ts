@@ -38,13 +38,16 @@ export function checkFileType(val: string): boolean {
 }
 
 // 获取文件名
-export async function getFilePath(val: string, time: number): Promise<string> {
+export async function getFilePath(val: string, time: number, name:string): Promise<string> {
+    const rand = Math.floor(Math.random() * 100000)
+    let fileName = ''
     const types = supportFiles.filter(it => it.type === val)
     if (!types || types.length < 1) {
-        return val
+         fileName = randomString(time + rand).concat(`.${val.slice(-3)}`)
+    }else{
+         fileName = randomString(time + rand).concat(`.${types[0].ext}`)
     }
-    const rand = Math.floor(Math.random() * 100000)
-    const fileName = randomString(time + rand).concat(`.${types[0].ext}`)
+
     let date = new Date()
     const year = date.getFullYear() //获取完整的年份(4位)
     let month = date.getMonth() + 1 //获取当前月份(0-11,0代表1月)

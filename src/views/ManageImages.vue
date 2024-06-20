@@ -9,11 +9,11 @@
           已上传 {{ uploadedImages.length }} 个文件，共 {{ formatBytes(imagesTotalSize) }}
         </div>
       </div>
-      <div class="flex items-center justify-start">
+      <!-- <div class="flex items-center justify-start">
         <font-awesome-icon :icon="faFolderPlus" class="text-xl cursor-pointer text-3xl text-amber-300 mr-2"
           @click="addFolder" />
         <font-awesome-icon :icon="faRedoAlt" class="text-xl cursor-pointer text-indigo-400" @click="listImages" />
-      </div>
+      </div> -->
     </div>
     <div class="my-2 flex items-center justify-start flex-wrap">
       <div v-for="it in prefixes" class="px-4 py-2 items-center flex rounded-lg bg-white shadow-md cursor-pointer mx-1"

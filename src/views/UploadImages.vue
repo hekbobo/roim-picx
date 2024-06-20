@@ -43,7 +43,7 @@
 				</div>
 			</div> -->
 
-			<el-button type="primary" :icon="Delete" @click="input?.click()">选择文件</el-button>
+			<el-button type="primary" @click="input?.click()">选择文件</el-button>
 
 			<div class="md:col-span-4 col-span-8">
 				<div class="w-full h-10 leading-10 px-4 text-center md:text-left">
