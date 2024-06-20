@@ -26,13 +26,13 @@
     <div class="grid gap-2 lg:gap-4 lg:grid-cols-4 grid-cols-2">
       <transition-group name="el-fade-in-linear">
         <div class="col-span-1 md:col-span-1" v-for="item in uploadedImages" :key="item.url">
-          <div v-if="item.filename?.includes('.png') || item.filename?.includes('.jpge')">
+          <div v-if="item.url?.includes('.png') || item.url?.includes('.jpeg') || item.url?.includes('.jpg')">
             <image-box :src="item.url" :copyUrl="item.copyUrl" :name="item.key" :size="item.size"
               @delete="deleteImage(item.key)" mode="uploaded" />
           </div>
           <div v-else class="el-card">
             <el-card>
-              <p>文件: {{ item.filename }} {{ item.url }} </p>
+              <p>文件:{{ item.url }} </p>
             </el-card>
           </div>
 
