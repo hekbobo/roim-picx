@@ -5,7 +5,7 @@
     <div class="flex items-center justify-between mb-4">
       <div>
         <div class="text-gray-800 text-lg">管理文件</div>
-        <div class="text-sm text-gray-500">
+        <div v-if="uploadedImages" class="text-sm text-gray-500">
           已上传 {{ uploadedImages.length }} 个文件，共 {{ formatBytes(imagesTotalSize) }}
         </div>
       </div>
@@ -30,10 +30,11 @@
             <image-box :src="item.url" :copyUrl="item.copyUrl" :name="item.key" :size="item.size"
               @delete="deleteImage(item.key)" mode="uploaded" />
           </div>
-          <div v-else class="el-card">
-            <el-card>
-              <p>文件:{{ item.url }} </p>
-            </el-card>
+          <div v-else>
+            <normalbox :src="item.url" :copyUrl="item.copyUrl" :name="item.key" :size="item.size"
+              @delete="deleteImage(item.key)" mode="uploaded">
+              <!-- <p>文件:{{ item.url }} </p> -->
+            </normalbox>
           </div>
 
         </div>
@@ -49,7 +50,8 @@ import formatBytes from '../utils/format-bytes'
 import { computed, onMounted, ref } from 'vue'
 import type { ImgItem, ImgReq, Folder } from '../utils/types'
 import ImageBox from '../components/ImageBox.vue'
-import { ElMessageBox, ElMessage } from 'element-plus'
+import Normalbox from '../components/NormalBox.vue'
+import { ElMessageBox, ElMessage, ElCard } from 'element-plus'
 import { faRedoAlt, faFolder, faFolderPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -101,8 +103,11 @@ const listImages = () => {
     } else {
       prefixes.value = ['/']
     }
-  }).catch(() => { })
+  }).catch(() => {
+    console.log('error')
+  })
     .finally(() => {
+      console.log('finally')
       loading.value = false
     })
 }

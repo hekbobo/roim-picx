@@ -7,6 +7,9 @@ export interface Env {
 }
 
 export const onRequest: PagesFunction<Env> = async (context : EventContext) => {
+
+  console.log('Request received 1', context.request.method, context.request.url);
+
   const { router } = await import('./router').then(
     async (module) => (await import('./routes'), module)
   );
